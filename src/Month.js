@@ -138,7 +138,8 @@ class Month extends Component {
       selectedRange,
       customClasses
     } = this.props;
-    const monthStart = moment([year, month, 1]); // current day
+    // NOTE For some wierd reason, moment index month from 0, so we substract 1 to get the correct month
+    const monthStart = moment([year, month - 1, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
     let prevMonthDaysCount = monthStart.weekday();
@@ -154,7 +155,7 @@ class Month extends Component {
     // day-generating loop
     const days = [];
     range(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).forEach(i => {
-      const day = moment([year, month, i - prevMonthDaysCount]);
+      const day = moment([year, month - 1, i - prevMonthDaysCount]);
 
       // pick appropriate classes
       const classes = [];
@@ -251,7 +252,7 @@ class Month extends Component {
 
     return (
       <tr>
-        <td className="month-name">{moment([year, month, 1]).format('MMM')}</td>
+        <td className="month-name">{moment([year, month - 1, 1]).format('MMM')}</td>
         {this.renderMonthDays()}
       </tr>
     );

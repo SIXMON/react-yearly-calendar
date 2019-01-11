@@ -6,7 +6,8 @@ import Month from './Month';
 import { range } from './utils';
 
 const propTypes = {
-  year: PropTypes.number.isRequired,
+  start: momentObj.isRequired,
+  end: momentObj.isRequired,
   forceFullWeeks: PropTypes.bool,
   showDaysOfWeek: PropTypes.bool,
   showWeekSeparators: PropTypes.bool,
@@ -125,12 +126,25 @@ class Calendar extends Component {
   render() {
     const { selectingRange } = this.state;
 
-    const months = range(0, 12).map(month => (
+    // i: date début
+    const seasonStart = moment(this.props.start);
+    // i: date fin
+    const seasonEnd = moment(this.props.end);
+    // o: [{ month: isoMonth, year: year for the month }]
+    const monthsToDisplay = [];
+
+    while (seasonEnd > seasonStart || seasonStart.format('M') === seasonEnd.format('M')) {
+      monthsToDisplay.push({ number: parseInt(seasonStart.format('M'), 10), year: seasonStart.format('Y') });
+      seasonStart.add(1, 'month');
+    }
+
+    const months = monthsToDisplay.map(month => (
       <Month
-        month={month}
+        month={month.number}
         key={`month-${month}`}
         dayClicked={(d, classes) => this.dayClicked(d, classes)}
         dayHovered={d => this.dayHovered(d)}
+        year={month.year}
         {...this.props}
         selectingRange={selectingRange}
       />
