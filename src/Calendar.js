@@ -141,7 +141,7 @@ class Calendar extends Component {
     const months = monthsToDisplay.map(month => (
       <Month
         month={month.number}
-        key={`month-${month}`}
+        key={`month-${month.number}`}
         dayClicked={(d, classes) => this.dayClicked(d, classes)}
         dayHovered={d => this.dayHovered(d)}
         year={month.year}
